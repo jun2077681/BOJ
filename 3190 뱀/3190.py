@@ -21,7 +21,7 @@ board = [[0 for _ in range(n)] for _ in range(n)]
 board[0][0] = 1
 head = [0, 0]
 snake = deque([(0, 0)])
-direction = [1, 0]
+direction = [0, 1]
 second = 0
 
 # 사과
@@ -38,6 +38,7 @@ for i in range(l):
     change_direction_list.append((x, c))
 
 while True:
+    second += 1
     dx, dy = (head[0] + direction[0], head[1] + direction[1])
     if dx >= n or dy >= n or dx < 0 or dy < 0:
         break
@@ -45,16 +46,16 @@ while True:
         break
 
     snake.appendleft((dx, dy))
+    head = [dx, dy]
     if board[dx][dy] != 2:
         tail = snake.pop()
         board[tail[0]][tail[1]] = 0
 
     board[dx][dy] = 1
 
-    if change_direction_list[0][0] == second:
-        change_direction(direction, change_direction_list[0][1])
-        change_direction_list.popleft()
-
-    second += 1
+    if change_direction_list:
+        if change_direction_list[0][0] == second:
+            change_direction(direction, change_direction_list[0][1])
+            change_direction_list.popleft()
 
 print(second)
